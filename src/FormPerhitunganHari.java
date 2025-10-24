@@ -12,6 +12,8 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
     /**
      * Creates new form FormPerhitunganHari
      */
+    private boolean suppressEvents = false;
+    
     public FormPerhitunganHari() {
         initComponents();
 
@@ -234,6 +236,26 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void resetToToday() {
+        try {
+            suppressEvents = true;                 // hentikan handling listener sementara
+
+            java.util.Date today = new java.util.Date();
+            calTanggal.setDate(today);             // set JCalendar ke tanggal hari ini
+
+            java.util.Calendar cal = calTanggal.getCalendar();
+            int bulanSekarang = cal.get(java.util.Calendar.MONTH);
+            int tahunSekarang = cal.get(java.util.Calendar.YEAR);
+
+            cmbBulan.setSelectedIndex(bulanSekarang);
+            spnTahun.setValue(tahunSekarang);
+
+            // update hasil/teks jika perlu
+            txtHasil.setText("Hasil akan ditampilkan disini.");
+        } finally {
+            suppressEvents = false;                // kembalikan listener aktif
+        }
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int bulan = cmbBulan.getSelectedIndex() + 1;
@@ -264,10 +286,7 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-            txtHasil.setText("");
-            cmbBulan.setSelectedIndex(0);
-            spnTahun.setValue(2025);
-            calTanggal.setDate(new Date());
+            resetToToday();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void spnTahunStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnTahunStateChanged

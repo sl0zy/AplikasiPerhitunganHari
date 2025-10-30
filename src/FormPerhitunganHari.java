@@ -4,8 +4,14 @@
  */
 
 
-import java.util.Calendar;
+
 import java.util.Date;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+
 
 public class FormPerhitunganHari extends javax.swing.JFrame {
 
@@ -16,6 +22,17 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
     
     public FormPerhitunganHari() {
         initComponents();
+        
+        // Spinner tahun non-desimal, rentang 1–9999
+        SpinnerNumberModel modelTahun = new SpinnerNumberModel(2025, 1, 9999, 1);
+        spnTahun.setModel(modelTahun);
+        spnTahun.setEditor(new JSpinner.NumberEditor(spnTahun, "#"));
+
+        JFormattedTextField tf = ((JSpinner.NumberEditor) spnTahun.getEditor()).getTextField();
+        ((NumberFormatter) ((DefaultFormatterFactory) tf.getFormatterFactory()).getDefaultFormatter())
+                .setAllowsInvalid(false);
+        ((NumberFormatter) ((DefaultFormatterFactory) tf.getFormatterFactory()).getDefaultFormatter())
+                .setOverwriteMode(true);
 
         // Set locale ke Bahasa Indonesia
         java.util.Locale.setDefault(new java.util.Locale("id", "ID"));
@@ -101,7 +118,6 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
         lblTahun.setText("Tahun:");
 
         spnTahun.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        spnTahun.setValue(2025);
         spnTahun.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spnTahunStateChanged(evt);
@@ -135,6 +151,7 @@ public class FormPerhitunganHari extends javax.swing.JFrame {
             }
         });
 
+        txtHasil.setEditable(false);
         txtHasil.setColumns(20);
         txtHasil.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtHasil.setLineWrap(true);
